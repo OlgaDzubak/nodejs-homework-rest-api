@@ -1,4 +1,4 @@
-## GoIT Node.js Course Template Homework
+c:\Users\OlgaD\Documents\G0IT school\NODE JS\nodejs-homework-rest-api – копія\schemas c:\Users\OlgaD\Documents\G0IT school\NODE JS\nodejs-homework-rest-api – копія\controllers c:\Users\OlgaD\Documents\G0IT school\NODE JS\nodejs-homework-rest-api – копія\helpers c:\Users\OlgaD\Documents\G0IT school\NODE JS\nodejs-homework-rest-api – копія\middlewares## GoIT Node.js Course Template Homework
 
 Wykonaj forka tego repozytorium, aby wykonywać zadania domowe (2-6). Fork utworzy repozytorium na Twoim koncie na http://github.com
 
