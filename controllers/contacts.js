@@ -16,17 +16,13 @@ const { httpError, ctrlWrapper } = require('../helpers/');
   }
 
   const addContact = async (req, res) => {
-    const {name, email, phone} = req.body;
+    const { name, email, phone } = req.body;
     const result = await contacts.addContact(name, email, phone);
-    if (!result) { throw httpError(400, `Error! Contact with the namen [${name}] is elready in the list`); }
+    if (!result) { throw httpError(400, `Contact with the name '${name}' is elready in the list`); }
     res.status(201).json(result);
   }
 
   const  updateContact = async (req, res) => {
-
-    console.log("req.body = ", req.body); 
-    if (Object.keys(req.body).length === 0) { throw httpError(400, "missing fields"); }
-
     const {contactId} = req.params;
     const result = await contacts.updateContact(contactId, req.body);
     if (!result) { throw httpError(404,"Not found"); }
