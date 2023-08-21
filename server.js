@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 const app = require('./app')
 const connectToMonoDB = require('./db/connection');
-const { PORT } = process.env;
+const { PORT} = process.env;
 mongoose.set('strictQuery', true);
-
 
 const startServer = async () => {
   try {
