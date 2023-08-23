@@ -1,12 +1,40 @@
+const { Schema, model } = require("mongoose");
 const joi = require("joi");
-const { httpError } = require('../helpers/');
+
+
+// ----- СХЕМИ МОДЕЛІ ДАНИХ БД ----------------------------------------------------------------------------
+const contactSchema = new Schema({
+    name: {
+      type: String,
+      required: [true, 'Set name for contact'],
+      minlength: 3,
+      maxlenght: 30,
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+      required: [true, 'Set phone for contact'],
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+},
+  {  
+    versionKey: false,
+});
+
+const Contact = model('Contact', contactSchema);
+
 
 // ----- СХЕМИ ВАЛІДАЦІЇ ДАНИХ В ТІЛІ HTTP-запиту -----------------------------------------------------------
-const validationSchema = joi.object({
+const addSchema = joi.object({
     name: joi.string().required().min(3).max(30).error(errors => {
             errors.forEach(err => {
                 switch (err.code) {
-                    case "any.required": 
+                        case "any.required": 
                                         err.message = "missing required name field";
                                         break;
                         case "string.empty":
@@ -44,7 +72,6 @@ const validationSchema = joi.object({
         }),
     phone: joi.string().pattern(/^\+{0,1}\d{0,3}[\-(]{1}\d{0,3}[\-)]{1}\d{3}\-{0,1}\d{2}\-{0,1}\d{2}$/i, 'phone').required().error(errors => {
         errors.forEach(err => {
-            console.log(err);
                 switch (err.code) {
                     case "any.required": 
                                         err.message = "missing required phone field";
@@ -62,6 +89,30 @@ const validationSchema = joi.object({
         
         return errors;
         }),
+    favorite: joi.boolean(),
 });
 
-module.exports = { validationSchema, };
+const updateFavoriteSchema = joi.object({
+    favorite: joi.boolean().required().error(errors => {
+      errors.forEach(err => {
+              switch (err.code) {
+                  case "any.required": 
+                                      err.message = "missing field favorite";
+                                      break;
+                  default:
+                                      break;
+                  }
+        });
+
+        return errors;
+        }),
+      
+});
+
+
+const schemas = {
+  addSchema,
+  updateFavoriteSchema,
+}
+
+module.exports = { Contact, schemas, };
