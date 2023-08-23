@@ -1,8 +1,10 @@
+require('dotenv').config();             // підключаємо змінні оточення
+
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
 
-const contactsRouter = require('./routes/api/contacts')
+const contactsRouter = require('./routes/contacts')
 
 const app = express()
 
