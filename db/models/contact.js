@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const joi = require("joi");
 
 
-// ----- СХЕМИ МОДЕЛІ ДАНИХ БД ----------------------------------------------------------------------------
+// ----- СХЕМИ МОДЕЛІ ДАНИХ БД "CONTACTS" -------------------------------------------------------------------
 const contactSchema = new Schema({
     name: {
       type: String,
@@ -21,15 +21,35 @@ const contactSchema = new Schema({
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    }
 },
   {  
     versionKey: false,
+    timestamps: true,
 });
-
 const Contact = model('Contact', contactSchema);
 
 
 // ----- СХЕМИ ВАЛІДАЦІЇ ДАНИХ В ТІЛІ HTTP-запиту -----------------------------------------------------------
+const getSchema = joi.object({
+  favorite: joi.boolean().error(errors => {
+          errors.forEach(err => {
+              switch (err.code) {
+                  case "boolean.base": 
+                                      err.message = "favorite field must be a boolean!";
+                                      break;
+                  default:
+                                      break;
+                  }
+          });
+          return errors;
+    }),
+});
+
 const addSchema = joi.object({
     name: joi.string().required().min(3).max(30).error(errors => {
             errors.forEach(err => {
@@ -111,6 +131,7 @@ const updateFavoriteSchema = joi.object({
 
 
 const schemas = {
+  getSchema,
   addSchema,
   updateFavoriteSchema,
 }

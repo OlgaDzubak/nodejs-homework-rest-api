@@ -1,10 +1,17 @@
-const {Contact} = require('../db/models/contact_model');
+const {Contact} = require('../db/models/contact');
 const { httpError, ctrlWrapper } = require('../helpers/');
 
 
 //------ HTTP-запити ----------------------------------------------------------------------------------------
   const getContacts = async (req, res) => {
-    const result = await Contact.find({});
+    const {id: owner} = req.user;
+    const {page = 1, limit = 10, favorite} = req.query;
+    const skip = (page - 1) * limit;
+
+    const filter = {owner};
+    if (favorite) filter.favorite = favorite;
+
+    const result = await Contact.find(filter, "-createdAt -updatedAt", { skip, limit }).populate("owner", "email");
     res.json(result);
   }
 
@@ -16,7 +23,8 @@ const { httpError, ctrlWrapper } = require('../helpers/');
   }
 
   const addContact = async (req, res) => {
-    const result = await Contact.create(req.body);
+    const {id: owner} = req.user;
+    const result = await Contact.create({ ...req.body, owner });
     if (!result) { throw httpError(400, `Contact with the name '${name}' is elready in the list`); }
     res.status(201).json(result);
   }
