@@ -1,5 +1,5 @@
 const express = require('express');
-const ctrl = require('../controllers/auth');
+const ctrl = require('../controllers/users');
 const {validateBody, authenticate}  = require("../middlewares");
 
 const {schemas} = require("../db/models/user");
@@ -8,23 +8,23 @@ const router = express.Router();
 
 
 router
-    .route('/users/register')
+    .route('/register')
     .post(validateBody(schemas.signUpSchema), ctrl.register);
 
 router
-    .route('/users/login')
+    .route('/login')
     .post(validateBody(schemas.signInSchema), ctrl.login);
 
 router
-    .route('/users/logout')
+    .route('/logout')
     .post(authenticate, ctrl.logout);
 
 router
-    .route('/users/current')
-    .post(authenticate, ctrl.getCurrent);
+    .route('/current')
+    .get(authenticate, ctrl.getCurrent);
 
 router
-    .route('/users')
+    .route('/')
     .patch(authenticate, validateBody(schemas.updateSubscriptionSchema), ctrl.updateSubscription);    
 
 module.exports = router;
