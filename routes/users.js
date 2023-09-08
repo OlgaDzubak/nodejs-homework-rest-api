@@ -25,7 +25,6 @@ router
 
 router
     .route('/')
-    .get(ctrl.getAllUsers)
     .patch(authenticate, validateBody(schemas.updateSubscriptionSchema), ctrl.updateSubscription); //запит на оновлення даних про підписку поточного користувача
 
 router

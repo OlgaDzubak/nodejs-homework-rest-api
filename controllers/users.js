@@ -13,13 +13,6 @@ const {SECRET_KEY} = process.env;
 //------ HTTP-запити ----------------------------------------------------------------------------------------
 
 // реєстрація нового користувача
-  
-const getAllUsers = async (req, res) => {
-
-  const users = await User.find({},"-_id -avatarURL -createdAt -updatedAt -subscription -token -password");
-  res.status(200).json(users);
-}
-
   const register = async (req, res) => {
 
     const {email, password} = req.body;
@@ -122,7 +115,6 @@ const getAllUsers = async (req, res) => {
 //---------------------------------------------------------------------------------------------------------
 
 module.exports = {
-  getAllUsers: ctrlWrapper(getAllUsers),
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
