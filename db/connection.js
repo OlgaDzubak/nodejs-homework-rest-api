@@ -12,5 +12,14 @@ const connectToMonoDB = async () => {
       console.log('Error connecting to MonoDB', error);
     }
 }
+
+const disconnectMonoDB = async () => {
+  try {
+    await mongoose.disconnect(); 
+    console.log("Database is disconnected");
+  }catch(error){ 
+    console.log('Error disconnecting MonoDB', error);
+  }
+}
   
-module.exports = connectToMonoDB;
+module.exports = {connectToMonoDB, disconnectMonoDB};
