@@ -30,6 +30,14 @@ const userSchema = new Schema(
             type: String,
             required: [true, 'Avatar url is required']
         }, 
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            required: [true, 'Verify token is required'],
+        },
     },
     {  
         versionKey: false,
@@ -89,11 +97,32 @@ const updateSubscriptionSchema = joi.object({
     }),
 });
 
+const emailSchema = joi.object({
+    email: joi.string().pattern(emailRegExp).required().error(errors => {
+            errors.forEach(err => {
+                switch (err.code) {
+                    case "any.required": 
+                                    err.message = "missing required field email";
+                                    break;
+                    case "string.empty":
+                                    err.message = "email field should not be empty!";
+                                    break;
+                    case "string.pattern.base" :
+                                    err.message = "email field must be a valid email!";
+                                    break;
+                    default:
+                                        break;
+                    }
+            });
+            return errors;
+        }),
+});
 
 const schemas = {
     signUpSchema,
     signInSchema,
     updateSubscriptionSchema,
+    emailSchema,
 }
   
 module.exports = { User, schemas, };
